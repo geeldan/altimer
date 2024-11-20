@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Count-Up Timer</title>
+    <style>
+        @keyframes floatParticles {
+            0% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(-20px); opacity: 0.6; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulsate {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: url('bgalia1.png') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #timer {
+            font-size: 12vw; /* Slightly smaller font size */
+            font-weight: bold;
+            margin: 0;
+            line-height: 1.2;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            animation: pulsate 1.5s infinite ease-in-out; /* Pulsating effect */
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: floatParticles 5s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div id="timer">Loading...</div>
+    <div class="particles" id="particles"></div>
+
+    <script>
+        // Count-Up Timer Logic
+        function countUp() {
+            const startDate = new Date("October 8, 2024 00:00:00").getTime();
+            const now = new Date().getTime();
+            const elapsed = now - startDate;
+
+            if (elapsed > 0) {
+                const days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+
+                document.getElementById("timer").innerHTML = 
+                    days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+            } else {
+                document.getElementById("timer").innerHTML = "0d 0h 0m 0s";
+            }
+        }
+
+        setInterval(countUp, 1000);
+
+        // Particle Animation Logic
+        const particlesContainer = document.getElementById("particles");
+        const particleCount = 50;
+
+        function createParticle() {
+            const particle = document.createElement("div");
+            particle.classList.add("particle");
+            particle.style.left = Math.random() * 100 + "vw";
+            particle.style.top = Math.random() * 100 + "vh";
+            particle.style.animationDuration = Math.random() * 5 + 2 + "s";
+            particle.style.animationDelay = Math.random() * 2 + "s";
+            particlesContainer.appendChild(particle);
+
+            // Remove particle after animation ends
+            particle.addEventListener("animationend", () => particle.remove());
+        }
+
+        // Generate particles continuously
+        setInterval(() => {
+            if (document.querySelectorAll(".particle").length < particleCount) {
+                createParticle();
+            }
+        }, 500);
+    </script>
+</body>
+</html>
