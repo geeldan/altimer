@@ -110,6 +110,19 @@
                 createParticle();
             }
         }, 500);
+
+        // Automatic Fullscreen Logic
+        document.addEventListener("DOMContentLoaded", () => {
+            const body = document.body;
+
+            if (body.requestFullscreen) {
+                body.requestFullscreen();
+            } else if (body.webkitRequestFullscreen) {
+                body.webkitRequestFullscreen(); // Safari
+            } else if (body.msRequestFullscreen) {
+                body.msRequestFullscreen(); // IE/Edge
+            }
+        });
     </script>
 </body>
 </html>
